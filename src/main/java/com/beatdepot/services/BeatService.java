@@ -1,6 +1,6 @@
 package com.beatdepot.services;
 
-import com.beatdepot.Controllers.BeatMakerController;
+import com.beatdepot.controllers.BeatMakerController;
 import com.beatdepot.dto.BeatDTO;
 import com.beatdepot.exceptions.ResourceNotFoundException;
 import com.beatdepot.models.Beat;

@@ -1,4 +1,4 @@
-package com.beatdepot.Controllers;
+package com.beatdepot.controllers;
 
 import com.beatdepot.dto.BeatDTO;
 import com.beatdepot.dto.BeatMakerDTO;

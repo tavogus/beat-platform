@@ -1,4 +1,4 @@
-package com.beatdepot.Controllers;
+package com.beatdepot.controllers;
 
 import com.beatdepot.dto.security.AccountCredentialsDTO;
 import com.beatdepot.services.AuthService;
