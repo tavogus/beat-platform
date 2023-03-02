@@ -53,6 +53,9 @@ public class User implements UserDetails, Serializable {
     @Column(name = "description")
     private String description;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Beat> beats;
+
     public User() {}
 
     public List<String> getRoles() {
@@ -182,6 +185,14 @@ public class User implements UserDetails, Serializable {
         this.description = description;
     }
 
+    public List<Beat> getBeats() {
+        return beats;
+    }
+
+    public void setBeats(List<Beat> beats) {
+        this.beats = beats;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -202,7 +213,8 @@ public class User implements UserDetails, Serializable {
         if (!Objects.equals(enabled, user.enabled)) return false;
         if (!Objects.equals(permissions, user.permissions)) return false;
         if (!Objects.equals(email, user.email)) return false;
-        return Objects.equals(description, user.description);
+        if (!Objects.equals(description, user.description)) return false;
+        return Objects.equals(beats, user.beats);
     }
 
     @Override
@@ -218,6 +230,7 @@ public class User implements UserDetails, Serializable {
         result = 31 * result + (permissions != null ? permissions.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (beats != null ? beats.hashCode() : 0);
         return result;
     }
 }

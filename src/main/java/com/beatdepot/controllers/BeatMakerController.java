@@ -19,10 +19,7 @@ public class BeatMakerController {
     private BeatMakerService service;
     @Autowired
     private BeatService beatService;
-    @GetMapping(value = "/beat/{id}")
-    public ResponseEntity<BeatDTO> findBeatById(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(beatService.findBeatById(id));
-    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<BeatMakerDTO> findById(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(service.findById(id));

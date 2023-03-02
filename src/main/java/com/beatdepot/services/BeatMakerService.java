@@ -11,6 +11,7 @@ import com.beatdepot.models.Beat;
 import com.beatdepot.models.User;
 import com.beatdepot.repositories.BeatRepository;
 import com.beatdepot.repositories.UserRepository;
+import com.beatdepot.util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,7 @@ public class BeatMakerService {
         User beatMaker = new User();
         beatMaker.setUserName(beatMakerInput.getUserName());
         beatMaker.setEmail(beatMakerInput.getEmail());
+        beatMaker.setPassword(PasswordEncoder.encodePassword(beatMakerInput.getPassword()));
         beatMaker.setDescription(beatMakerInput.getDescription());
 
         return repository.save(beatMaker);
