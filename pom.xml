@@ -92,6 +92,11 @@
 			<artifactId>spring-cloud-aws-autoconfigure</artifactId>
 			<version>${aws.autoconfigure.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

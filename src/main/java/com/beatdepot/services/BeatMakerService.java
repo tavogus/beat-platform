@@ -15,6 +15,8 @@ import com.beatdepot.util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,7 +27,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class BeatMakerService {
 
-    private Logger logger = Logger.getLogger(BeatMakerService.class.getName());
+    private final Logger logger = Logger.getLogger(BeatMakerService.class.getName());
 
     @Autowired
     private UserRepository repository;
@@ -47,10 +49,16 @@ public class BeatMakerService {
 
         logger.info("Creating new Beat Maker!");
 
-        var existingBeatMaker = repository.findByUsername(beatMakerInput.getUserName());
-        if (existingBeatMaker != null) {
+        var existingUserName = repository.findByUsername(beatMakerInput.getUserName());
+        if (existingUserName != null) {
             throw new BusinessException("Already Exists a beat maker with this user name!");
         }
+
+        var existingEmail = repository.findByEmail(beatMakerInput.getEmail());
+        if (existingEmail != null) {
+            throw new BusinessException("Already Exists a beat maker with this email!");
+        }
+
 
         var entity = this.save(beatMakerInput);
 
@@ -64,6 +72,10 @@ public class BeatMakerService {
         beatMaker.setUserName(beatMakerInput.getUserName());
         beatMaker.setEmail(beatMakerInput.getEmail());
         beatMaker.setPassword(PasswordEncoder.encodePassword(beatMakerInput.getPassword()));
+        beatMaker.setAccountNonExpired(true);
+        beatMaker.setAccountNonLocked(true);
+        beatMaker.setCredentialsNonExpired(true);
+        beatMaker.setEnabled(true);
         beatMaker.setDescription(beatMakerInput.getDescription());
 
         return repository.save(beatMaker);

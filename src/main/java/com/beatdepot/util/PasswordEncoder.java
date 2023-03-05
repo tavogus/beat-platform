@@ -14,8 +14,9 @@ public class PasswordEncoder {
         encoders.put("pbkdf2", encoder);
         DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("pbkdf2", encoders);
         passwordEncoder.setDefaultPasswordEncoderForMatches(encoder);
+        String generatedPassword = passwordEncoder.encode(password);
 
-        return passwordEncoder.encode(password);
+        return generatedPassword.substring(8);
     }
 
 

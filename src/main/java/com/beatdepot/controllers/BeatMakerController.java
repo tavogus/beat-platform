@@ -2,10 +2,8 @@ package com.beatdepot.controllers;
 
 import com.beatdepot.dto.BeatDTO;
 import com.beatdepot.dto.BeatMakerDTO;
-import com.beatdepot.dto.BeatMakerInputDTO;
 import com.beatdepot.services.BeatMakerService;
 import com.beatdepot.services.BeatService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +21,6 @@ public class BeatMakerController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<BeatMakerDTO> findById(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(service.findById(id));
-    }
-    @PostMapping
-    public ResponseEntity<BeatMakerDTO> addBeatMaker(@Valid @RequestBody BeatMakerInputDTO beatMakerInput) {
-        return ResponseEntity.ok(service.preSave(beatMakerInput));
     }
 
     @PostMapping(value = "/upload")
