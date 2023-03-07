@@ -13,6 +13,11 @@ import com.beatdepot.repositories.BeatRepository;
 import com.beatdepot.repositories.UserRepository;
 import com.beatdepot.util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -35,6 +40,9 @@ public class BeatMakerService {
     @Autowired
     private BeatRepository beatRepository;
 
+    @Autowired
+    PagedResourcesAssembler<BeatMakerDTO> assembler;
+
     public BeatMakerDTO findById(Long id) {
         logger.info("Finding one beat maker!");
 
@@ -42,6 +50,25 @@ public class BeatMakerService {
         var dto = this.populateResponse(entity);
         dto.add(linkTo(methodOn(BeatMakerController.class).findById(id)).withSelfRel());
         return dto;
+    }
+
+    public PagedModel<EntityModel<BeatMakerDTO>> findByFilter(String filter, Pageable pageable) {
+        logger.info("Finding all beat makers by filter!");
+
+        var beatMakersPage = repository.findByFilter(filter, pageable);
+
+        var beatMakersDtos = beatMakersPage.map(this::populateResponse);
+        beatMakersDtos.map(p -> p.add(linkTo(methodOn(BeatMakerController.class).findById(p.getId())).withSelfRel()));
+
+        Link findByFilterLink = linkTo(
+                methodOn(BeatMakerController.class)
+                        .findByFilter(pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                "asc",
+                                filter)
+        ).withSelfRel();
+
+        return assembler.toModel(beatMakersDtos, findByFilterLink);
     }
 
     public BeatMakerDTO preSave(BeatMakerInputDTO beatMakerInput) {
@@ -58,7 +85,6 @@ public class BeatMakerService {
         if (existingEmail != null) {
             throw new BusinessException("Already Exists a beat maker with this email!");
         }
-
 
         var entity = this.save(beatMakerInput);
 
@@ -95,6 +121,7 @@ public class BeatMakerService {
                 BeatDTO beatDTO = new BeatDTO();
                 beatDTO.setId(beat.getId());
                 beatDTO.setUrl(beat.getUrl());
+                beatDTO.setTitle(beat.getTitle());
                 beatDTO.setTags(beat.getTags());
                 beatDTO.setUploadedAt(beat.getUploadedAt());
 

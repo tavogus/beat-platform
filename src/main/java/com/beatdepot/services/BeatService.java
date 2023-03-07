@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -55,10 +56,26 @@ public class BeatService {
         return dto;
     }
 
+    public BeatDTO addBeatInformations(BeatDTO beatDTO) {
+        Optional<Beat> byId = repository.findById(beatDTO.getId());
+        if (byId.isPresent()) {
+            Beat beat = byId.get();
+            beat.setTitle(beatDTO.getTitle());
+            beat.setTags(beatDTO.getTags());
+
+            Beat updatedBeat = repository.save(beat);
+
+            return this.populateResponse(updatedBeat);
+        } else {
+            throw new ResourceNotFoundException("No beat found for this ID!");
+        }
+    }
+
     private BeatDTO populateResponse(Beat beat) {
         BeatDTO dto = new BeatDTO();
         dto.setId(beat.getId());
         dto.setUrl(beat.getUrl());
+        dto.setTitle(beat.getTitle());
         dto.setUploadedAt(beat.getUploadedAt());
         dto.setTags(beat.getTags());
         return dto;

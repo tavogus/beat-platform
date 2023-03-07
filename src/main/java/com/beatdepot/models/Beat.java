@@ -16,6 +16,7 @@ public class Beat implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
+    private String title;
     @Column(name = "uploaded_at")
     private LocalDateTime uploadedAt;
     @ElementCollection
@@ -43,6 +44,14 @@ public class Beat implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public LocalDateTime getUploadedAt() {

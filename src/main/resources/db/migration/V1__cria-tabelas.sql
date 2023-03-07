@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS  `users`(
 CREATE TABLE IF NOT EXISTS  `beats`(
     `id`          BIGINT NOT NULL AUTO_INCREMENT,
     `url`         VARCHAR(255),
+    `title`       VARCHAR(255),
     `uploaded_at` DATETIME,
     `user_id`     BIGINT,
     PRIMARY KEY (`id`)

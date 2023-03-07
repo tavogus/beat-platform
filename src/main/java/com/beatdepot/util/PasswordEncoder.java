@@ -18,6 +18,4 @@ public class PasswordEncoder {
 
         return generatedPassword.substring(8);
     }
-
-
 }

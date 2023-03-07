@@ -11,6 +11,7 @@ public class BeatDTO extends RepresentationModel<BeatDTO> implements Serializabl
     private static final long serialVersionUID = 1L;
     private Long id;
     private String url;
+    private String title;
     private List<String> tags;
     private LocalDateTime uploadedAt;
 
@@ -27,6 +28,14 @@ public class BeatDTO extends RepresentationModel<BeatDTO> implements Serializabl
 
     public String getUrl() {
         return url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setUrl(String url) {
