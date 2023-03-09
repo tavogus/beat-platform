@@ -8,6 +8,7 @@ import com.beatdepot.exceptions.BusinessException;
 import com.beatdepot.exceptions.RequiredObjectIsNullException;
 import com.beatdepot.exceptions.ResourceNotFoundException;
 import com.beatdepot.models.Beat;
+import com.beatdepot.models.Permission;
 import com.beatdepot.models.User;
 import com.beatdepot.repositories.BeatRepository;
 import com.beatdepot.repositories.UserRepository;
@@ -20,8 +21,6 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -39,6 +38,9 @@ public class BeatMakerService {
 
     @Autowired
     private BeatRepository beatRepository;
+
+    @Autowired
+    private PermissionService permissionService;
 
     @Autowired
     PagedResourcesAssembler<BeatMakerDTO> assembler;
@@ -104,7 +106,16 @@ public class BeatMakerService {
         beatMaker.setEnabled(true);
         beatMaker.setDescription(beatMakerInput.getDescription());
 
+        populatePermission(beatMaker);
+
         return repository.save(beatMaker);
+    }
+
+    private void populatePermission(User beatMaker) {
+        List<Permission> permissions = new ArrayList<>();
+        Permission permission = permissionService.findById(Permission.COMMON_USER);
+        permissions.add(permission);
+        beatMaker.setPermissions(permissions);
     }
 
     private BeatMakerDTO populateResponse(User beatMaker) {

@@ -2,7 +2,6 @@ package com.beatdepot.controllers;
 
 import com.beatdepot.dto.BeatMakerDTO;
 import com.beatdepot.services.BeatMakerService;
-import com.beatdepot.services.BeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

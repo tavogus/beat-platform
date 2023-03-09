@@ -9,6 +9,7 @@ import java.io.Serializable;
 @Table(name = "permission")
 public class Permission implements GrantedAuthority, Serializable {
 
+    public static final Long COMMON_USER = 3L;
     private static final long serialVersionUID = 1L;
 
     @Id
