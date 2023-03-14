@@ -22,8 +22,10 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -126,23 +128,21 @@ public class BeatMakerService {
         dto.setDescription(beatMaker.getDescription());
 
         List<Beat> beats = beatRepository.findByUserId(beatMaker.getId());
-        if (!beats.isEmpty()) {
-            List<BeatDTO> beatListDTO = new ArrayList<>();
-            for (Beat beat : beats) {
-                BeatDTO beatDTO = new BeatDTO();
-                beatDTO.setId(beat.getId());
-                beatDTO.setUrl(beat.getUrl());
-                beatDTO.setTitle(beat.getTitle());
-                beatDTO.setTags(beat.getTags());
-                beatDTO.setUploadedAt(beat.getUploadedAt());
 
-                beatListDTO.add(beatDTO);
-            }
-            dto.setBeats(beatListDTO);
-        } else {
-            dto.setBeats(new ArrayList<>());
-        }
+        List<BeatDTO> beatListDTO = beats
+                .stream()
+                .filter(beat -> !beats.isEmpty())
+                .map(beat -> {
+                    BeatDTO beatDTO = new BeatDTO();
+                    beatDTO.setId(beat.getId());
+                    beatDTO.setUrl(beat.getUrl());
+                    beatDTO.setTitle(beat.getTitle());
+                    beatDTO.setTags(beat.getTags());
+                    beatDTO.setUploadedAt(beat.getUploadedAt());
+                    return beatDTO;
+                }).collect(Collectors.toList());
 
+        dto.setBeats(beats.isEmpty() ? Collections.emptyList() : beatListDTO);
         return dto;
     }
 }
